@@ -1,1 +1,2 @@
-- ## Syslog
+ ## $${\color{green} Syslog}$$
+
