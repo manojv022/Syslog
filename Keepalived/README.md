@@ -1,1 +1,2 @@
 
+- Keepalived is an open-source Linux software that provides high availability and load balancing using the Virtual Router Redundancy Protocol (VRRP). It creates a virtual IP address (VIP) or floating IP that acts as a single gateway, routing traffic to a cluster of servers. If the primary (active) server fails, Keepalived automatically fails over to a backup server, ensuring continuous service availability and minimizing downtime. It also monitors the health of backend servers to manage the server pool dynamically
