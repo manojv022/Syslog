@@ -4,12 +4,12 @@
 
 **Key Functions**
 
--  'High Availability (HA):'
+-  `High Availability (HA):`
     Keepalived uses VRRP to establish a primary (master) and backup (slave) relationship between servers. The master server holds the VIP, and if it becomes unresponsive, a backup server quickly takes over the VIP and begins directing traffic. This active-passive or active-active setup ensures services remain accessible. 
 
-- Load Balancing:
+- `Load Balancing:`
 Keepalived uses the Linux Virtual Server (LVS) kernel module to distribute network traffic across multiple backend servers. It can manage a pool of servers, checking their health and sending traffic only to healthy servers. 
-- Health Monitoring:
+- `Health Monitoring:`
 Keepalived incorporates various health checks to determine the status of services. If a backend server or a service on it fails, the health checker signals the failover mechanism to reroute traffic, maintaining service continuity. 
-- VRRP Protocol:
+- `VRRP Protocol:`
 VRRP is the core protocol Keepalived uses. It enables servers to form a virtual router group, appearing as a single, highly available router to clients. 
