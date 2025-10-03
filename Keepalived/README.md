@@ -13,3 +13,14 @@ Keepalived uses the Linux Virtual Server (LVS) kernel module to distribute netwo
 Keepalived incorporates various health checks to determine the status of services. If a backend server or a service on it fails, the health checker signals the failover mechanism to reroute traffic, maintaining service continuity. 
 - `VRRP Protocol:`
 VRRP is the core protocol Keepalived uses. It enables servers to form a virtual router group, appearing as a single, highly available router to clients. 
+
+
+
+**How It Works**
+
+   - `Virtual IP (VIP):` A shared virtual IP address is configured across multiple servers. 
+
+- `Master/Backup Roles:` One server acts as the master, holding the VIP, while others are backups. 
+- `Health Checks:` Keepalived constantly monitors the status of the master server and the backend services. 
+- `Failover:` If the master server fails, a backup server detects the failure and rapidly takes over the VIP, becoming the new master. 
+- `Traffic Redirection:` Network traffic is redirected to the new master server, with minimal or no interruption to users
