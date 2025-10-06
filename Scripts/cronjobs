@@ -1,0 +1,2 @@
+# Daily 12:05 am
+5 0 * * * /root/ftpscript.sh >> /var/log/ems_ftp_cron.log 2>&1
