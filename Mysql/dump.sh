@@ -1,3 +1,4 @@
+- Dump Restore B to A:
 #!/bin/bash
 # -------------------------------------------------------------------
 # MySQL Daily Dump + Restore Script (Server B -> Server A)
