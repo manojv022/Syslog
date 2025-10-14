@@ -1,2 +1,2 @@
- ## $${\color{blue} Syslog}$$
+ ## $${\color{green} Syslog}$$
 
