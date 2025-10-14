@@ -1,3 +1,6 @@
+0 2 * * * /bin/bash /root/sstp.sh >> /var/log/ems_ftp_cron.log 2>&1
+
+
 #!/bin/bash
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 
