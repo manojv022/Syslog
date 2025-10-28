@@ -101,9 +101,9 @@ trap - INT TERM EXIT
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 
 # ================= Configuration =================
-HOST="10.136.32.10"
-USER="syslogdata"
-PASS="Admin@123"
+HOST="x.x.x.x"
+USER="xyz"
+PASS="Admin"
 
 BASE_DIR="/syslog_data2/performance_report"
 TODAY=$(date +%F)
