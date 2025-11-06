@@ -64,17 +64,17 @@ Once the tunnel is established, all data passing through it is encrypted and aut
 
 
 
-🔹 Advantages
+- `Advantages`
 
-Fully open-source and standards-compliant
+- Fully open-source and standards-compliant
 
-Supports IKEv1 and IKEv2
+- Supports IKEv1 and IKEv2
 
-Strong encryption (AES, SHA2, etc.)
+- Strong encryption (AES, SHA2, etc.)
 
-Works with certificates, PSKs, or EAP authentication
+- Works with certificates, PSKs, or EAP authentication
 
-Integrates with RADIUS, LDAP, and Active Directory
+- Integrates with RADIUS, LDAP, and Active Directory
 
 Can run on Linux, FreeBSD, Android, and more
 
