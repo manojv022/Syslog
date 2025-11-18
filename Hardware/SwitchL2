@@ -1,0 +1,62 @@
+A switch is a Layer 2 (L2) network device that connects devices within the same local network (LAN). Here’s the clear breakdown:
+
+✅ What is a Switch?
+
+A switch is a networking device that:
+
+Operates at Layer 2 (Data Link Layer) of the OSI model
+
+Uses MAC addresses to forward frames
+
+Connects devices like PCs, servers, printers, access points within a LAN
+
+It creates separate collision domains for each port, improving network performance.
+
+✅ Is a Switch Layer 2?
+
+Yes — by default, a switch is an L2 device.
+It uses MAC addresses to make forwarding decisions.
+
+However:
+
+L2 Switch → works only at Layer 2 (Switching)
+
+L3 Switch → works at Layer 2 + Layer 3 (Routing)
+So not all switches are strictly L2—some are L3 or multilayer.
+
+✅ Where Is It Configured on a Server?
+
+A switch is not configured on a server.
+
+A switch is an external hardware device in the network.
+You configure it by connecting to the switch itself, not to a server.
+
+You configure a switch using:
+
+Console/Serial port (initial setup)
+
+SSH or Telnet (remote management)
+
+Web GUI (if it’s a smart or managed switch)
+
+Configuration happens on the switch OS (e.g., Cisco IOS, Juniper JunOS, HP ProCurve OS), not on a server.
+
+🖥️ If you're referring to “switching” inside a server:
+
+Sometimes people confuse:
+
+Network switch (hardware)
+
+Virtual switch (vSwitch) inside virtualization platforms
+
+A Virtual Switch exists in:
+
+VMware ESXi
+
+Hyper-V
+
+Proxmox
+
+KVM
+
+These are software switches inside the server, but they are still L2 switching devices.
