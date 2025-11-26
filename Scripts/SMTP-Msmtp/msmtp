@@ -12,8 +12,8 @@ DATE=$(date +'%Y%m%d_%H%M%S')
 BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_$DATE.sql"
 ZIP_FILE="${BACKUP_FILE}.zip"
 
-MAIL_TO="mbeniwal057@gmail.com"
-MAIL_FROM="mbeniwal057@gmail.com"
+MAIL_TO="mbeniwal0757@gmail.com"
+MAIL_FROM="mbeniwal0757@gmail.com"
 MAIL_SUBJECT="MySQL Backup - $DB_NAME ($DATE)"
 
 mkdir -p "$BACKUP_DIR"
@@ -42,7 +42,7 @@ Your MySQL backup was created successfully.
 Backup file: $(basename "$ZIP_FILE")
 
 Regards,
-AWS Backup Script"
+Mysql Backup Script"
 echo
 echo "--BOUNDARY"
 echo "Content-Type: application/zip; name=$(basename "$ZIP_FILE")"
