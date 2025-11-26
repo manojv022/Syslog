@@ -1,3 +1,46 @@
+-------------------------- installation --------------------------------------
+
+sudo apt update
+sudo apt install msmtp msmtp-mta
+
+------------------------- Configuration ------------------------------------------
+
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        /var/log/msmtp.log
+
+account gmail
+host smtp.gmail.com
+port 587
+from mbeniwal057@gmail.com
+user mbeniwal057@gmail.com
+password pemqvwpkiqcflvbr
+
+account default : gmail
+
+
+
+sudo chmod 600 /etc/msmtprc
+
+
+echo -e "Subject: Test from msmtp\n\nThis is a working mail." | msmtp mbeniwal057@gmail.com
+
+
+sudo touch /var/log/msmtp.log
+sudo chmod 666 /var/log/msmtp.log
+
+
+--------------------------debug----------------------------
+
+printf "From: mbeniwal057@gmail.com\nTo: mbeniwal057@gmail.com\nSubject: Working test mail\n\nThis is a test mail via msmtp." \
+| msmtp -v --debug mbeniwal057@gmail.com
+
+
+
+
+
 #!/bin/bash
 #=========================================
 # MySQL Backup and Email Script (msmtp)
