@@ -21,3 +21,93 @@ sudo nano /opt/db_backups/mysql_backup.sh
 
 sudo chmod +x /opt/db_backups/mysql_backup.sh
 
+---------------------------------------------------------------------------------------------------------------------------
+
+sudo apt install ssmtp -y
+
+sudo nano /etc/ssmtp/ssmtp.conf
+
+root=postmaster
+mailhub=smtp.gmail.com:587
+AuthUser=yourgmail@gmail.com
+AuthPass=YOUR_APP_PASSWORD
+UseSTARTTLS=YES
+UseTLS=YES
+FromLineOverride=YES
+hostname=ec2-server
+
+
+
+sudo apt install zip -y
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+#!/bin/bash
+#=========================================
+# MySQL Backup and Email Script (SSMTP)
+#=========================================
+
+DB_USER="backupuser"
+DB_PASS="StrongPass@123"
+DB_NAME="backupdb"
+
+BACKUP_DIR="/opt/db_backups"
+DATE=$(date +'%Y%m%d_%H%M%S')
+BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_$DATE.sql"
+ZIP_FILE="${BACKUP_FILE}.zip"
+
+MAIL_TO="receiver@gmail.com"
+MAIL_FROM="yourgmail@gmail.com"
+MAIL_SUBJECT="MySQL Backup - $DB_NAME ($DATE)"
+
+mkdir -p "$BACKUP_DIR"
+
+mysqldump -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" > "$BACKUP_FILE"
+if [ $? -ne 0 ]; then
+    echo "MySQL dump failed!"
+    exit 1
+fi
+
+zip -j "$ZIP_FILE" "$BACKUP_FILE"
+/bin/rm -f "$BACKUP_FILE"
+
+(
+echo "To: $MAIL_TO"
+echo "From: $MAIL_FROM"
+echo "Subject: $MAIL_SUBJECT"
+echo "MIME-Version: 1.0"
+echo "Content-Type: multipart/mixed; boundary=BOUNDARY"
+echo
+echo "--BOUNDARY"
+echo "Content-Type: text/plain; charset=utf-8"
+echo
+echo "Hi,
+Please find attached the latest MySQL backup.
+
+Regards,
+AWS Backup Script"
+echo
+echo "--BOUNDARY"
+echo "Content-Type: application/zip; name=$(basename "$ZIP_FILE")"
+echo "Content-Transfer-Encoding: base64"
+echo "Content-Disposition: attachment; filename=$(basename "$ZIP_FILE")"
+echo
+base64 "$ZIP_FILE"
+echo "--BOUNDARY--"
+) | ssmtp "$MAIL_TO"
+
+if [ $? -eq 0 ]; then
+    echo "Backup created and emailed successfully."
+else
+    echo "Backup created, but sending email failed!"
+fi
+
+find "$BACKUP_DIR" -type f -mtime +7 -name "*.zip" -delete
