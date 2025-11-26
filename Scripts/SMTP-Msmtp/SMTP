@@ -31,7 +31,7 @@ sudo nano /opt/db_backups/mysql_backup.sh
 
 sudo chmod +x /opt/db_backups/mysql_backup.sh
 
----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------- installation and configuration ------------------------------------------------------------
 
 sudo apt install ssmtp -y
 
@@ -50,15 +50,23 @@ hostname=ec2-server
 
 sudo apt install zip -y
 
+--------------------------------------For Testing-------------------------------------------------------
+(
+echo "To: mbeniwal057@gmail.com"
+echo "From: mbeniwal057@gmail.com"
+echo "Subject: SSMTP Gmail Test"
+echo
+echo "Email working successfully from AWS EC2 using SSMTP!"
+) | ssmtp mbeniwal057@gmail.com
+
+
+------------------------Debug for testing----------------------------------------
+
+echo "Debug test" | ssmtp -v mbeniwal057@gmail.com
 
 
 
-
-
-
-
-
-------------------------------------------------------------------------------------------------
+------------------------------------------------SSMTP MYSQL Script------------------------------------------------
 
 #!/bin/bash
 #=========================================
