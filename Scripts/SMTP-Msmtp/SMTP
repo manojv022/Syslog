@@ -12,6 +12,16 @@ UseTLS=YES
 hostname=yourserver
 FromLineOverride=YES
 
+-----------------------------------------------------------------FOR Outlook------------------------------------
+
+mailhub=smtp.office365.com:587
+UseSTARTTLS=YES
+AuthUser=you@outlook.com
+AuthPass=your_outlook_password
+
+
+-------------------------------------------------------------------------------------------------------------------
+
 
 
 echo "Test email body" | ssmtp receiver@example.com
