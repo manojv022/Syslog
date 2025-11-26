@@ -1,0 +1,28 @@
+
+Takes a remote MySQL dump from Server B → saves to Server A → sends email.
+
+sudo nano /root/mysql_pull.sh
+
+#!/bin/bash
+
+# Server B details
+B_HOST="SERVER_B_IP"
+B_USER="root"
+B_PASS="MYSQL_PASSWORD"
+B_DB="your_database_name"
+
+# Local path on Server A
+BACKUP_DIR="/root/db_backups"
+mkdir -p $BACKUP_DIR
+
+DATE=$(date +"%Y-%m-%d_%H-%M")
+FILE="$BACKUP_DIR/db_$DATE.sql"
+
+# Take dump from server B and copy to Server A
+ssh root@$B_HOST "mysqldump -u$B_USER -p$B_PASS $B_DB" > $FILE
+
+if [ $? -eq 0 ]; then
+    echo -e "Subject: MySQL Dump Success\n\nBackup completed: $FILE" | msmtp your_email@gmail.com
+else
+    echo -e "Subject: MySQL Dump FAILED\n\nError during backup" | msmtp your_email@gmail.com
+fi
