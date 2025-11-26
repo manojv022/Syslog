@@ -1,1 +1,23 @@
+sudo apt update
+sudo apt install mysql-server ssmtp zip -y
+
+sudo nano /etc/ssmtp/ssmtp.conf
+
+root=postmaster
+mailhub=smtp.gmail.com:587
+AuthUser=yourmail@gmail.com
+AuthPass=your_app_password
+UseSTARTTLS=YES
+UseTLS=YES
+hostname=yourserver
+FromLineOverride=YES
+
+
+
+echo "Test email body" | ssmtp receiver@example.com
+
+sudo mkdir -p /opt/db_backups
+sudo nano /opt/db_backups/mysql_backup.sh
+
+sudo chmod +x /opt/db_backups/mysql_backup.sh
 
