@@ -103,7 +103,7 @@ echo "Hi,
 Please find attached the latest MySQL backup.
 
 Regards,
-AWS Backup Script"
+Mysql Backup Script"
 echo
 echo "--BOUNDARY"
 echo "Content-Type: application/zip; name=$(basename "$ZIP_FILE")"
