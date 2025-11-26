@@ -1,0 +1,62 @@
+#!/bin/bash
+#=========================================
+# MySQL Backup and Email Script (msmtp)
+#=========================================
+
+DB_USER="backupuser"
+DB_PASS="StrongPass@123"
+DB_NAME="backupdb"
+
+BACKUP_DIR="/opt/db_backups"
+DATE=$(date +'%Y%m%d_%H%M%S')
+BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_$DATE.sql"
+ZIP_FILE="${BACKUP_FILE}.zip"
+
+MAIL_TO="mbeniwal057@gmail.com"
+MAIL_FROM="mbeniwal057@gmail.com"
+MAIL_SUBJECT="MySQL Backup - $DB_NAME ($DATE)"
+
+mkdir -p "$BACKUP_DIR"
+
+mysqldump -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" > "$BACKUP_FILE"
+if [ $? -ne 0 ]; then
+    echo "MySQL dump failed!"
+    exit 1
+fi
+
+zip -j "$ZIP_FILE" "$BACKUP_FILE"
+/bin/rm -f "$BACKUP_FILE"
+
+(
+echo "To: $MAIL_TO"
+echo "From: $MAIL_FROM"
+echo "Subject: $MAIL_SUBJECT"
+echo "MIME-Version: 1.0"
+echo "Content-Type: multipart/mixed; boundary=BOUNDARY"
+echo
+echo "--BOUNDARY"
+echo "Content-Type: text/plain; charset=utf-8"
+echo
+echo "Hi,
+Your MySQL backup was created successfully.
+Backup file: $(basename "$ZIP_FILE")
+
+Regards,
+AWS Backup Script"
+echo
+echo "--BOUNDARY"
+echo "Content-Type: application/zip; name=$(basename "$ZIP_FILE")"
+echo "Content-Transfer-Encoding: base64"
+echo "Content-Disposition: attachment; filename=$(basename "$ZIP_FILE")"
+echo
+base64 "$ZIP_FILE"
+echo "--BOUNDARY--"
+) | msmtp "$MAIL_TO"
+
+if [ $? -eq 0 ]; then
+    echo "Backup created and emailed successfully."
+else
+    echo "Backup created, but sending email failed!"
+fi
+
+find "$BACKUP_DIR" -type f -mtime +7 -name "*.zip" -delete
