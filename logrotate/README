@@ -1,1 +1,16 @@
+- truncate -s 0 /var/log/catalina.out
 
+- truncate -s 10M application.log
+
+
+- logrotate /etc/logrotate.conf
+
+--- configure -------
+/var/log/catalina.out {
+    size 100M
+    rotate 5
+    compress
+    missingok
+    notifempty
+    copytruncate
+}
