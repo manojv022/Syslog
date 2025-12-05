@@ -1,1 +1,165 @@
+- database deploy on multiple server's via ansible playbook .yml file configuration:
+
+    - inventory.yml:
+
+all:
+  hosts:
+    pg1:
+      ansible_host: 10.0.0.11
+    pg2:
+      ansible_host: 10.0.0.12
+    pg3:
+      ansible_host: 10.0.0.13
+    redis1:
+      ansible_host: 10.0.0.14
+    redis2:
+      ansible_host: 10.0.0.15
+    redis3:
+      ansible_host: 10.0.0.16
+    click1:
+      ansible_host: 10.0.0.17
+    click2:
+      ansible_host: 10.0.0.18
+
+  children:
+    postgresql:
+      hosts:
+        pg1:
+        pg2:
+        pg3:
+    redis:
+      hosts:
+        redis1:
+        redis2:
+        redis3:
+    clickhouse:
+      hosts:
+        click1:
+        click2:
+
+
+------------------- Create Inventory (Localhost Only) ------------------
+
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+
+
+
+---------- playbook.yml ----------------------
+
+
+---
+- name: Install PostgreSQL 14, Redis 6.x, ClickHouse (Ubuntu 22.04)
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+  # -------------------------------
+  # PostgreSQL 14
+  # -------------------------------
+  - name: Ensure apt cache is updated
+    apt:
+      update_cache: yes
+
+  - name: Install PostgreSQL 14
+    apt:
+      name: postgresql-14
+      state: present
+
+  - name: Ensure PostgreSQL service is running
+    service:
+      name: postgresql
+      state: started
+      enabled: yes
+
+  - name: Wait for Postgres socket
+    wait_for:
+      path: /var/run/postgresql/.s.PGSQL.5432
+      state: present
+      timeout: 30
+
+  # -------------------------------
+  # Redis 6.x
+  # -------------------------------
+  - name: Install Redis
+    apt:
+      name: redis-server
+      state: present
+
+  - name: Ensure Redis service is running
+    service:
+      name: redis-server
+      state: started
+      enabled: yes
+
+  - name: Wait for Redis
+    wait_for:
+      host: 127.0.0.1
+      port: 6379
+      state: started
+      timeout: 30
+
+  # -------------------------------
+  # ClickHouse (NO GPG KEY)
+  # -------------------------------
+  - name: Add ClickHouse APT repository WITHOUT key check
+    apt_repository:
+      repo: "deb [trusted=yes] https://packages.clickhouse.com/deb stable main"
+      state: present
+      filename: clickhouse
+
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+
+  - name: Install ClickHouse server & client
+    apt:
+      name:
+        - clickhouse-server
+        - clickhouse-client
+      state: present
+
+  - name: Ensure ClickHouse is running
+    service:
+      name: clickhouse-server
+      state: started
+      enabled: yes
+
+  - name: Wait for ClickHouse port (9000)
+    wait_for:
+      host: 127.0.0.1
+      port: 9000
+      state: started
+      timeout: 30
+
+
+
+
+
+
+
+---------------------- execute command ---------------------
+
+ansible-playbook -i inventory.yml setup_databases.yml
+
+
+
+--- commands ----------
+
+sudo systemctl status postgresql
+psql --version
+sudo -u postgres psql -c "SELECT version();"  (for check connectivity)
+
+sudo systemctl status redis-server
+redis-cli ping
+
+sudo systemctl status clickhouse-server
+clickhouse-client --query "SELECT version();"
+ss -tulpn | grep 9000
+
+
 
